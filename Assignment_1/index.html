@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorts</title>
+    <style media="all">
+        html {
+            font-family: sans-serif;
+        }
+        ul {
+            list-style: none;
+        }
+        .codeblock {
+            //color: white;
+            background-color: lightgrey;
+
+        }
+
+    </style>
+<script type="text/javascript">
+
+    /**
+     * Bubble sort algorithm.
+     * @param theArray
+     */
+    function bubbleSort(theArray) {
+        let swapped = true;
+        let temp = 0;
+        while (swapped){
+            swapped = false;
+            for (let i = 0; i < theArray.length; i++) {
+                if(theArray[i] > theArray[i + 1]) {
+                    swapped = true;
+                    temp = theArray[i];
+                    theArray[i] = theArray[i + 1];
+                    theArray[i + 1] = temp;
+                }
+            }
+        }
+    }
+
+    /**
+     * Create an array of random values <= 1000, of size 'size'.
+     * See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+     * and: https://stackoverflow.com/questions/5836833/create-an-array-with-random-values
+     * @param size number of elements in array
+     * @returns {number[]}
+     */
+    function randomArray(size, max){
+        return Array.from({length: size}, () => Math.floor(Math.random() * (max + 1)));
+    }
+
+    /*
+    Notes on the code in this function:
+        Passing as anonymous function defers execution, see:
+        https://stackoverflow.com/questions/13286233/pass-a-javascript-function-as-parameter#13286241
+
+        The .slice() method creates a shallow copy, see:
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+        and
+        https://stackoverflow.com/questions/51164161/spread-syntax-vs-slice-method
+     */
+    function run() {
+
+        //clear embedded console;
+        // const logTarget = document.getElementById("output");
+        //
+        // logTarget.innerHTML += "Algorithm: " + algo.name + "<br>";
+        // console.log("from inside algoTest")
+
+        let shortArraySize = 100;
+        let longArraySize = 1000;
+        let maxValue = 1000;
+
+        let shortArray = randomArray(shortArraySize, maxValue);
+
+        //short array tests
+        let runTimes = [];
+
+        for (let i = 0; i < 100; i++) {
+            runTimes.push(algoTest(()=>{bubbleSort(shortArray.slice())}));
+        }
+
+        let avgRunTime = runTimes.reduce((a, b) => a + b, 0) / runTimes.length;
+
+        document.getElementById("output").innerHTML = "Bubble sort on 100 elements averages: " +
+            avgRunTime + " milliseconds<br>";
+
+
+        //console.log(avgRunTime);
+
+
+        let longArray = randomArray(longArraySize, maxValue);
+        // algoTest(()=>{bubbleSort(longArray.slice())});
+        //
+
+    }
+
+    function algoTest(algo){
+
+        let startTime = performance.now();
+        algo();
+        let endTime = performance.now();
+
+        return  endTime - startTime
+
+    }
+
+</script>
+
+</head>
+<body>
+<header>
+<ul>
+    <li>Tom Mahoney</li>
+    <li>CIT360</li>
+    <li>Fall 2022</li>
+</ul>
+    <details>
+        <summary>Assignment Description - Comparing Sorting Algorithms (click to expand)</summary>
+        <p>In this assignment, you will compare the practical run times of selection, insertion, bubble, merge, and
+        the quick sorts. Make sure that all sort algorithms work with the same data in each test. Run the
+        experiment several times and average all the obtained times. Graphically display the findings.</p>
+        <p>
+        Here are the steps that need to be completed:
+        <ol>
+        <li>
+            Write implementations of selection, insertion, bubble, merge, and quick sorts.
+        </li>
+        <li>
+            Write a method that fills an array with some random numbers.
+        </li>
+        <li>
+            Using a loop, repeatedly, randomize a new array, and give its copies to each one of the
+            sorts. Calculate the completion time of each sort. See below how to time a method. Save
+            the calculated time in an array.
+        </li>
+        <li>
+            At the completion of the loop, calculate the average sort time for each one of the sorts.
+        </li>
+        <li>
+            Display your findings in a formatted manner for two cases:
+            <ol type="a">
+                <li>
+                    Case 1: small array size n <= 100
+                </li>
+                <li>
+                    Case 2: large array size n >= 10000
+                </li>
+            </ol>
+        </li>
+
+
+    </ol>
+        </p>
+        <p>Some general notes:</p>
+        <ol type="a">
+
+       <li>Use the following code to measure amount of time (in Nano seconds) that a method takes
+        to complete:
+           <p class="codeblock"><code>
+        long startTime = System.nanoTime();<br>
+        // ... the code being timed ...<br>
+        long estimatedTime = System.nanoTime() - startTime;
+           </code></p>
+        <li>Array size needs to be large, say 1000. Number of iterations also need to be large. Declare
+            constants and use values that work well with your hardware.</li>
+            <li>Your program needs to run without requiring any input from user.</li>
+            <li>I/O must be formatted, clear, and informative.</li>
+            <li>Document you code.</li>
+        <li>If you are copying a code from a source, first document the code source, and second, you
+        must understand the code well enough to be able to reproduce it yourself. You are not
+            allowed to copy code from other students.</li>
+        <li>Here is a sample output for case 1 :
+            <p class="codeblock"><code>
+        Array size: 100
+                <br>        Max value: 1000
+                <br>Number of iterations: 500
+                <br>Average run times (in Nano seconds):
+                <br>Selection sort: **************** 200
+                <br>Insertion sort: ************ 160
+                <br>Bubble sort: ************** 170
+                <br>Quick sort: ******** 120
+                <br>Merge sort: *********** 150
+            </code></p>
+        </li>
+
+        </ol>
+
+    </details>
+
+</header>
+
+<main>
+
+    <section class="code_control">
+        <button onclick="run()">Run Code</button>
+        <button>Reset Page</button>
+    </section>
+
+    <section class="code_ouput">
+    <h4>Code Output:</h4>
+    <div class="codeblock">
+    <code id="output">Click "run code".</code>
+    </div></section>
+
+
+</main>
+</body>
+</html>
