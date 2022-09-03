@@ -221,13 +221,11 @@ function randomArray(size, max){
 
 function run() {
 
-    //clear embedded console;
-    // const logTarget = document.getElementById("output");
-    // logTarget.innerHTML += "Algorithm: " + algo.name + "<br>";
 
     let shortArraySize = 100;
     let longArraySize = 1000;
     let maxValue = 1000;
+    let iterations = 100;
 
     //map is a dict-like iterable in ES6 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
     let shortResultsMap = new Map();
@@ -243,36 +241,29 @@ function run() {
         and
         https://stackoverflow.com/questions/51164161/spread-syntax-vs-slice-method
      */
-    shortResultsMap.set("Bubble sort, n = 100:", getAlgoAvgRunTime(()=>{bubbleSort(shortArray.slice())}));
-    shortResultsMap.set("Selection sort, n = 100:", getAlgoAvgRunTime(()=>{selectionSort(shortArray.slice())}));
-    shortResultsMap.set("Insertion sort, n = 100:", getAlgoAvgRunTime(()=>{insertionSort(shortArray.slice())}));
-    shortResultsMap.set("Quick sort, n = 100:", getAlgoAvgRunTime(()=>{quickSort(shortArray.slice())}));
-    shortResultsMap.set("Merge sort, n = 100:", getAlgoAvgRunTime(()=>{mergeSort(shortArray.slice())}));
+    shortResultsMap.set("Bubble sort, n = 100:", getAlgoAvgRunTime(()=>{bubbleSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Selection sort, n = 100:", getAlgoAvgRunTime(()=>{selectionSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Insertion sort, n = 100:", getAlgoAvgRunTime(()=>{insertionSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Quick sort, n = 100:", getAlgoAvgRunTime(()=>{quickSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Merge sort, n = 100:", getAlgoAvgRunTime(()=>{mergeSort(shortArray.slice())}, iterations));
 
-    //
-    console.log(shortResultsMap);
+    let sortedShortMap = new Map([...shortResultsMap.entries()].sort((a,b) => a[1] - b[1]));
+
+    logResults(shortArraySize, maxValue, iterations, sortedShortMap);
 
     let longResultsMap = new Map();
     let longArray = randomArray(longArraySize, maxValue);
 
-    longResultsMap.set("Bubble sort, n = 1000:", getAlgoAvgRunTime(()=>{bubbleSort(longArray.slice())}));
-    longResultsMap.set("Selection sort, n = 1000:", getAlgoAvgRunTime(()=>{selectionSort(longArray.slice())}));
-    longResultsMap.set("Insertion sort, n = 1000:", getAlgoAvgRunTime(()=>{insertionSort(longArray.slice())}));
-    longResultsMap.set("Quick sort, n = 1000:", getAlgoAvgRunTime(()=>{quickSort(longArray.slice())}));
-    longResultsMap.set("Merge sort, n = 1000:", getAlgoAvgRunTime(()=>{mergeSort(longArray.slice())}));
-
-    console.log(longResultsMap);
-
-    //document.getElementById("output").innerHTML = "Bubble sort on 100 elements averages: " +
-    //    avgRunTime + " milliseconds<br>";
+    longResultsMap.set("Bubble sort, n = 1000:", getAlgoAvgRunTime(()=>{bubbleSort(longArray.slice())}, iterations));
+    longResultsMap.set("Selection sort, n = 1000:", getAlgoAvgRunTime(()=>{selectionSort(longArray.slice())}, iterations));
+    longResultsMap.set("Insertion sort, n = 1000:", getAlgoAvgRunTime(()=>{insertionSort(longArray.slice())}, iterations));
+    longResultsMap.set("Quick sort, n = 1000:", getAlgoAvgRunTime(()=>{quickSort(longArray.slice())}, iterations));
+    longResultsMap.set("Merge sort, n = 1000:", getAlgoAvgRunTime(()=>{mergeSort(longArray.slice())}, iterations));
 
 
     let sortedLongMap = new Map([...longResultsMap.entries()].sort((a,b) => a[1] - b[1]));
 
-    console.log(sortedLongMap);
-
-
-
+    logResults(longArraySize, maxValue, iterations, sortedLongMap);
 
 }
 
@@ -287,12 +278,12 @@ function run() {
  * @returns {number} //time for algo to process.
  */
 
-function getAlgoAvgRunTime(algo){ // , array){
+function getAlgoAvgRunTime(algo, iterations){ // , array){
 
     let runTimes = [];
     let avgRunTime = 0;
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < iterations; i++) {
 
         let startTime = performance.now(); // nanosecond time
         algo(); //array);
@@ -305,4 +296,24 @@ function getAlgoAvgRunTime(algo){ // , array){
     avgRunTime = runTimes.reduce((a, b) => a + b, 0) / runTimes.length;
 
     return Math.floor(avgRunTime * 1000000); //convert nanoseconds to milliseconds, no decimals
+}
+
+function logResults(n, maxValue, iterations, resultMap){
+    const logTarget = document.getElementById("output");
+
+    resultMap.innerHTML += '<p>';
+
+    resultMap.forEach(
+            (v, k) => logTarget.innerHTML += '<br>' + k + ' ' + v + ' ms');
+    resultMap.innerHTML += '</p>';
+
+
+
+    //clear embedded console;
+    //
+    // logTarget.innerHTML += "Algorithm: " + algo.name + "<br>";
+
+    //document.getElementById("output").innerHTML = "Bubble sort on 100 elements averages: " +
+    //    avgRunTime + " milliseconds<br>";
+
 }
