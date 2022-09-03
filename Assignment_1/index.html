@@ -15,9 +15,11 @@
     <li>Tom Mahoney</li>
     <li>CIT360</li>
     <li>Fall 2022</li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Assignment_1/scripts/assignment_1.js" target="_blank">JS source code</a></li>
 </ul>
     <details>
         <summary>Assignment Description - Comparing Sorting Algorithms (click to expand)</summary>
+        <div class="assignment_detail">
         <p>In this assignment, you will compare the practical run times of selection, insertion, bubble, merge, and
         the quick sorts. Make sure that all sort algorithms work with the same data in each test. Run the
         experiment several times and average all the obtained times. Graphically display the findings.</p>
@@ -86,21 +88,25 @@
         </li>
 
         </ol>
-
+        </div>
     </details>
 
 </header>
 
 <main>
 
-    <section class="code_control">
-        <button onclick="run()">Run Code</button>
-        <button>Reset Page</button>
-    </section>
+    <div class="code_control">
+        <section id="buttons">
+            <button onclick="run()">Run Code</button>
+            <button onclick="reset()">Reset Page</button>
+        </section>
+
+    </div>
 
     <section class="code_ouput">
     <h4>Code Output:</h4>
     <div class="codeblock">
+
     <code id="output">Click "run code".</code>
     </div></section>
 

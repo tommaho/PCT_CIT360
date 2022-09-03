@@ -218,9 +218,14 @@ function randomArray(size, max){
     return Array.from({length: size}, () => Math.floor(Math.random() * (max + 1)));
 }
 
+/**
+ * called by the page reset button
+ */
+function reset() {
+    window.location.reload();
+}
 
 function run() {
-
 
     let shortArraySize = 100;
     let longArraySize = 1000;
@@ -230,6 +235,8 @@ function run() {
     //map is a dict-like iterable in ES6 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
     let shortResultsMap = new Map();
     let shortArray = randomArray(shortArraySize, maxValue);
+
+    document.getElementById("output").innerHTML = '';
 
     /*
     Notes on the code below:
@@ -241,11 +248,11 @@ function run() {
         and
         https://stackoverflow.com/questions/51164161/spread-syntax-vs-slice-method
      */
-    shortResultsMap.set("Bubble sort, n = 100:", getAlgoAvgRunTime(()=>{bubbleSort(shortArray.slice())}, iterations));
-    shortResultsMap.set("Selection sort, n = 100:", getAlgoAvgRunTime(()=>{selectionSort(shortArray.slice())}, iterations));
-    shortResultsMap.set("Insertion sort, n = 100:", getAlgoAvgRunTime(()=>{insertionSort(shortArray.slice())}, iterations));
-    shortResultsMap.set("Quick sort, n = 100:", getAlgoAvgRunTime(()=>{quickSort(shortArray.slice())}, iterations));
-    shortResultsMap.set("Merge sort, n = 100:", getAlgoAvgRunTime(()=>{mergeSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Bubble sort:", getAlgoAvgRunTime(()=>{bubbleSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Selection sort:", getAlgoAvgRunTime(()=>{selectionSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Insertion sort:", getAlgoAvgRunTime(()=>{insertionSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Quick sort:", getAlgoAvgRunTime(()=>{quickSort(shortArray.slice())}, iterations));
+    shortResultsMap.set("Merge sort:", getAlgoAvgRunTime(()=>{mergeSort(shortArray.slice())}, iterations));
 
     let sortedShortMap = new Map([...shortResultsMap.entries()].sort((a,b) => a[1] - b[1]));
 
@@ -254,11 +261,11 @@ function run() {
     let longResultsMap = new Map();
     let longArray = randomArray(longArraySize, maxValue);
 
-    longResultsMap.set("Bubble sort, n = 1000:", getAlgoAvgRunTime(()=>{bubbleSort(longArray.slice())}, iterations));
-    longResultsMap.set("Selection sort, n = 1000:", getAlgoAvgRunTime(()=>{selectionSort(longArray.slice())}, iterations));
-    longResultsMap.set("Insertion sort, n = 1000:", getAlgoAvgRunTime(()=>{insertionSort(longArray.slice())}, iterations));
-    longResultsMap.set("Quick sort, n = 1000:", getAlgoAvgRunTime(()=>{quickSort(longArray.slice())}, iterations));
-    longResultsMap.set("Merge sort, n = 1000:", getAlgoAvgRunTime(()=>{mergeSort(longArray.slice())}, iterations));
+    longResultsMap.set("Bubble sort:", getAlgoAvgRunTime(()=>{bubbleSort(longArray.slice())}, iterations));
+    longResultsMap.set("Selection sort:", getAlgoAvgRunTime(()=>{selectionSort(longArray.slice())}, iterations));
+    longResultsMap.set("Insertion sort:", getAlgoAvgRunTime(()=>{insertionSort(longArray.slice())}, iterations));
+    longResultsMap.set("Quick sort:", getAlgoAvgRunTime(()=>{quickSort(longArray.slice())}, iterations));
+    longResultsMap.set("Merge sort:", getAlgoAvgRunTime(()=>{mergeSort(longArray.slice())}, iterations));
 
 
     let sortedLongMap = new Map([...longResultsMap.entries()].sort((a,b) => a[1] - b[1]));
@@ -301,19 +308,14 @@ function getAlgoAvgRunTime(algo, iterations){ // , array){
 function logResults(n, maxValue, iterations, resultMap){
     const logTarget = document.getElementById("output");
 
-    resultMap.innerHTML += '<p>';
+    logTarget.innerHTML += '<br>';
+    logTarget.innerHTML += '<br>Array size: ' + n;
+    logTarget.innerHTML += '<br>Max value: ' + maxValue;
+    logTarget.innerHTML += '<br>Iterations: ' + iterations;
+    logTarget.innerHTML += '<br>';
+
 
     resultMap.forEach(
             (v, k) => logTarget.innerHTML += '<br>' + k + ' ' + v + ' ms');
-    resultMap.innerHTML += '</p>';
-
-
-
-    //clear embedded console;
-    //
-    // logTarget.innerHTML += "Algorithm: " + algo.name + "<br>";
-
-    //document.getElementById("output").innerHTML = "Bubble sort on 100 elements averages: " +
-    //    avgRunTime + " milliseconds<br>";
 
 }

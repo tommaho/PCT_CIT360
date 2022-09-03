@@ -15,11 +15,29 @@
 
 html {
     font-family: sans-serif;
+    background-color: whitesmoke;
 }
 ul {
     list-style: none;
 }
+
+details, div, summary {
+    padding: 10px 10px;
+    width: 800px;
+}
+.codeblock, .code_control, .assignment_detail {
+    border: 1px solid darkgray;
+}
+
+.codeblock, .code_control {
+    width: 500px;
+}
+
+.assignment_detail {
+    background-color: linen;
+}
+
+
 .codeblock {
     background-color: lightgrey;
-
 }
