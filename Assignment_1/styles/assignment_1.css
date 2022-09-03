@@ -1,0 +1,14 @@
+/*
+css for assignment_1
+ */
+
+html {
+    font-family: sans-serif;
+}
+ul {
+    list-style: none;
+}
+.codeblock {
+    background-color: lightgrey;
+
+}
