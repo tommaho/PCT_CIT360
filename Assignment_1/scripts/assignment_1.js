@@ -1,3 +1,17 @@
+/**
+ * Tom Mahoney
+ * CIT360
+ * Assignment 1 - js
+ *
+ * Page is hosted and for assignment instructions see:
+ *
+ * https://tommaho.github.io/PCT_CIT360/Assignment_1/
+ *
+ */
+
+
+
+
 
 /**
  * Selection sort algorithm.
