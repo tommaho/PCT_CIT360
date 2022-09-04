@@ -282,6 +282,9 @@ function run() {
  *  Uses performance.now for timestamping:
  *  https://developer.mozilla.org/en-US/docs/Web/API/Performance/now
  *
+ *  I'm not convinced multiplying the timer result is exactly equal to nanoseconds, but
+ *  it'll be useful as a relative measure. 
+ *
  * @returns {number} //time for algo to process.
  */
 
@@ -302,8 +305,9 @@ function getAlgoAvgRunTime(algo, iterations){ // , array){
 
     avgRunTime = runTimes.reduce((a, b) => a + b, 0) / runTimes.length;
 
+    console.log(avgRunTime);
 
-    return Math.floor(avgRunTime * 1000000); //convert fractional milliseconds to nanoseconds, no decimals
+    return Math.floor(avgRunTime * 1000000); //convert milliseconds to nanoseconds, no decimals
 }
 
 /**
