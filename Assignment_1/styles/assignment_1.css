@@ -32,7 +32,9 @@ details, div, summary {
 .codeblock, .code_control {
     width: 500px;
 }
-
+.code_control {
+    text-align: center;
+}
 .assignment_detail {
     background-color: linen;
 }
