@@ -302,7 +302,8 @@ function getAlgoAvgRunTime(algo, iterations){ // , array){
 
     avgRunTime = runTimes.reduce((a, b) => a + b, 0) / runTimes.length;
 
-    return Math.floor(avgRunTime * 1000000); //convert nanoseconds to milliseconds, no decimals
+
+    return Math.floor(avgRunTime * 1000000); //convert fractional milliseconds to nanoseconds, no decimals
 }
 
 /**
@@ -320,14 +321,14 @@ function logResults(n, maxValue, iterations, resultMap){
     const logTarget = document.getElementById("output");
 
     let logHTML =  '<table><thead><tr><td colspan="3" class="test_header">Test Results</td></tr>';
-    logHTML += '<tr><td>Array size: <td colspan="2">' + n + '</td></tr>';
-    logHTML += '<tr><td>Max value: </td><td colspan="2">' + maxValue + '</td></tr>';
-    logHTML += '<tr><td>Iterations:</td><td colspan="2">' + iterations + '</td></tr></thead>';
+    logHTML += '<tr><td>Array size: <td colspan="2">' + n.toLocaleString() + '</td></tr>';
+    logHTML += '<tr><td>Max value: </td><td colspan="2">' + maxValue.toLocaleString() + '</td></tr>';
+    logHTML += '<tr><td>Iterations:</td><td colspan="2">' + iterations.toLocaleString() + '</td></tr></thead>';
     logHTML += '<tbody>'
 
     resultMap.forEach(
         (v, k) => logHTML += '<tr><td>' + k + '</td><td> '
-            + v + ' ms </td><td>'
+            + v.toLocaleString() + ' ns </td><td>'
             + '*'.repeat( Math.log(v)) +'</td></tr>');  //super simple indicator of relative time.
                                                         //I'd like something more intuitive but this will
                                                         //have to do.
