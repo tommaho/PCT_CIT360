@@ -305,17 +305,35 @@ function getAlgoAvgRunTime(algo, iterations){ // , array){
     return Math.floor(avgRunTime * 1000000); //convert nanoseconds to milliseconds, no decimals
 }
 
+/**
+ * Prepare and write a table that logs sorted test results to the page.
+ * I took the log of sort time to decide how many asterisks to display,
+ * which I'm not a big fan of but it'll have to do since it's not the focus
+ * of this. Maybe I'll come back and do a more interesting graphic later.
+ *
+ * @param n
+ * @param maxValue
+ * @param iterations
+ * @param resultMap
+ */
 function logResults(n, maxValue, iterations, resultMap){
     const logTarget = document.getElementById("output");
 
-    logTarget.innerHTML += '<br>';
-    logTarget.innerHTML += '<br>Array size: ' + n;
-    logTarget.innerHTML += '<br>Max value: ' + maxValue;
-    logTarget.innerHTML += '<br>Iterations: ' + iterations;
-    logTarget.innerHTML += '<br>';
-
+    let logHTML =  '<table><thead><tr><td colspan="3" class="test_header">Test Results</td></tr>';
+    logHTML += '<tr><td>Array size: <td colspan="2">' + n + '</td></tr>';
+    logHTML += '<tr><td>Max value: </td><td colspan="2">' + maxValue + '</td></tr>';
+    logHTML += '<tr><td>Iterations:</td><td colspan="2">' + iterations + '</td></tr></thead>';
+    logHTML += '<tbody>'
 
     resultMap.forEach(
-            (v, k) => logTarget.innerHTML += '<br>' + k + ' ' + v + ' ms');
+        (v, k) => logHTML += '<tr><td>' + k + '</td><td> '
+            + v + ' ms </td><td>'
+            + '*'.repeat( Math.log(v)) +'</td></tr>');  //super simple indicator of relative time.
+                                                        //I'd like something more intuitive but this will
+                                                        //have to do.
+
+    logHTML += '</tbody></table>';
+
+    logTarget.innerHTML += logHTML;
 
 }

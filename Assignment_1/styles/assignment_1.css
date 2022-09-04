@@ -29,7 +29,7 @@ details, div, summary {
     border: 1px solid darkgray;
 }
 
-.codeblock, .code_control {
+.codeblock, .code_control, table {
     width: 500px;
 }
 .code_control {
@@ -39,7 +39,32 @@ details, div, summary {
     background-color: linen;
 }
 
+/*table {*/
+/*    width: 500px;*/
+/*}*/
+/*td {*/
+/*    width: 100px;*/
+/*}*/
 
+/*table,*/
+/*td {*/
+/*    border: 1px solid #333;*/
+/*    */
+/*}*/
+
+/*thead,*/
+/*tfoot {*/
+/*    background-color: #333;*/
+/*    color: #fff;*/
+/*}*/
+
+td {
+    width: 100px;
+}
+
+.test_header {
+    text-align: center;
+}
 .codeblock {
     background-color: lightgrey;
 }
