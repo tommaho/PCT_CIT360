@@ -283,7 +283,7 @@ function run() {
  *  https://developer.mozilla.org/en-US/docs/Web/API/Performance/now
  *
  *  I'm not convinced multiplying the timer result is exactly equal to nanoseconds, but
- *  it'll be useful as a relative measure. 
+ *  it'll be useful as a relative measure.
  *
  * @returns {number} //time for algo to process.
  */
