@@ -3,7 +3,7 @@
  * CIT360
  * Assignment 2 - js
  *
- * Page is hosted and for assignment instructions see:
+ * Page is hosted, for assignment instructions see:
  *
  * https://tommaho.github.io/PCT_CIT360/Assignment_2/
  *
@@ -57,7 +57,7 @@ function getNGrams(str, n){
 
         let gramDiversity = new Set(gram).size; //Set operation will yield only unique values
 
-        if (!ngrams.get(gram) && gramDiversity > mostDiverse){
+        if (!ngrams.get(gram) && gramDiversity > mostDiverse){ //not yet stored AND more diverse, skip the rest
 
             ngrams.set(gram, gramDiversity);
             mostDiverse = gramDiversity;
@@ -78,9 +78,9 @@ function sortNGrams(map){
 
 
 /**
- * Loading the file will initiate algo execution.
+ * Loading the file will initiate execution.
  *
- * Adapted directly from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsText
+ * File load adapted from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsText
  */
 function loadFileAndRun() {
 
@@ -107,8 +107,8 @@ function loadFileAndRun() {
 
             fileHTML += j  + ". <p class='fileContent'>" + n + "<br>" + highlightWinner(textStr, winner) + "</p>";
 
-            resultHTML += j  + ". The first most diverse entry is <span class='entry'>" + winner + "</span> with " +
-                distinctN + " distinct values.<br>"
+            resultHTML += j  + ". The first most diverse entry is <span class='entry'>" + winner +
+                "</span> with " + distinctN + " distinct values.<br>"
 
             j++;
             i += 1;
