@@ -228,7 +228,7 @@ function reset() {
 function run() {
 
     let shortArraySize = 100;
-    let longArraySize = 1000;
+    let longArraySize = 10000;
     let maxValue = 1000;
     let iterations = 100;
 

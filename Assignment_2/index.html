@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorts</title>
+    <link rel="stylesheet" href="styles/assignment_2.css">
+    <script type="text/javascript" src="scripts/assignment_2.js">
+
+</script>
+
+</head>
+<body>
+<header>
+<ul>
+    <li>Tom Mahoney</li>
+    <li>CIT360</li>
+    <li>Fall 2022</li>
+    <li>&nbsp;</li>
+    <li>Assignment 2</li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Assignment_2/scripts/assignment_2.js" target="_blank">JS source code</a></li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Assignment_2/data/string_assignment.dat" target="_blank">Data file</a></li>
+
+</ul>
+    <details>
+        <summary>Assignment Description - Most Varied Substring (click to expand)</summary>
+        <div class="assignment_detail">
+            <p>You are given a string <strong>S</strong> and an integer <strong>L</strong>.
+                Your task is to find the substring of length <strong>L</strong>
+                in <strong>S</strong> that has the greatest number of distinct characters.</p>
+        <p>
+            For instance, given
+            <ul>
+        <li>
+            S = “TTRTTSSSSTSTSTS”
+        </li>
+        <li>
+            L = 4
+        </li>
+    </ul>
+        </p>
+            <p>
+                The output should be:
+            <ul>
+                <li>
+                    “RTSS” 		3
+                </li>
+            </ul>
+            </p>
+
+
+        <p>If there are multiple substrings with the same property, cite the first one.</p>
+
+        <p>
+            Your program should read pairs of strings and numbers from a file called
+            “string_assignment.dat” and for each pair, output (in the above format)
+            the result to the standard output.
+        </p>
+            <p>
+                Input file format:</p>
+            <p>An integer number in the first line of the text indicates the number of input pairs</p>
+            <p>Strings and numbers are placed on separate lines in consecutive order.</p>
+
+
+        </div>
+    </details>
+
+</header>
+
+<main>
+
+    <div class="code_control">
+        <section id="buttons">
+            <input type="file" onchange="loadFile()" />
+            <button onclick="reset()">Reset Page</button>
+        </section>
+
+    </div>
+
+    <section class="code_ouput">
+    <h4>Data file contents (long entries will wrap):</h4>
+        <code><div class="content">
+
+   Choose a data file.
+    </div></code></section>
+
+
+    <section class="code_ouput">
+
+    <h4>Code output:</h4>
+    <div class="codeblock">
+
+        <code id="output">Choose a data file.</code>
+    </div></section>
+
+
+
+</main>
+</body>
+</html>
