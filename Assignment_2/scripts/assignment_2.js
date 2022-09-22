@@ -1,4 +1,13 @@
-
+/**
+ * Tom Mahoney
+ * CIT360
+ * Assignment 2 - js
+ *
+ * Page is hosted and for assignment instructions see:
+ *
+ * https://tommaho.github.io/PCT_CIT360/Assignment_2/
+ *
+ */
 
 /**
  * called by the page reset button
