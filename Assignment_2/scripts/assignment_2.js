@@ -14,6 +14,7 @@
  */
 function reset() {
     window.location.reload();
+    window.fileInputForm.reset;
 }
 
 
