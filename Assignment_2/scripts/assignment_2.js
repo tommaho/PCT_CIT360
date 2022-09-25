@@ -99,6 +99,9 @@ function loadFileAndRun() {
             let n =  parseInt( parsedText[i], 10);
             let textStr = parsedText[i + 1];
 
+            if (n && textStr) {//only proceed if these values both exist
+
+
             let result = getNGrams(textStr, n);
             let sortedResults = sortNGrams(result);
 
@@ -112,6 +115,7 @@ function loadFileAndRun() {
 
             j++;
             i += 1;
+            }
          }
 
         displayFile(fileHTML);
