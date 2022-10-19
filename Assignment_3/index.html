@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maze - Shortest Path</title>
+    <link rel="stylesheet" href="styles/assignment_3.css">
+    <script type="text/javascript" src="scripts/assignment_3.js">
+
+</script>
+
+</head>
+<body>
+<header>
+<ul>
+    <li>Tom Mahoney</li>
+    <li>CIT360</li>
+    <li>Fall 2022</li>
+    <li>&nbsp;</li>
+    <li>Assignment 3</li>
+    <li>JS source code</li>
+
+</ul>
+    <details>
+        <summary>Assignment Description - Maze Application (click to expand)</summary>
+        <div class="assignment_detail">
+<p>Write an application that applies both DFS and BFS algorithms to find paths between two points in a maze.
+    Your application needs to take the following specific steps:
+</p>
+            <ul>
+                <li>
+                    Generate a random size 2D maze.
+                </li>
+                <li>
+                    Pick two random points on the maze as start and finish points.
+                </li>
+
+                <li>
+                    Use Depth First Search algorithm to find a path from the start to fish points.
+                </li>
+
+                <li>
+                    Use Breadth First Search algorithm to find a shortest path from the start to fish points.
+                    Draw (print) the found paths.
+                </li>
+
+                <li>
+                    Application should also respond correctly if there is no path between the end points.
+                </li>
+                <li>
+                    For example:
+                </li>
+
+<p>
+    <img src="images/rawGraphicExample.png">
+</p>
+
+
+
+            </ul>
+
+
+
+            <p>Helpful Notes:</p>
+
+            <ul>
+                <li>
+                    Use a parallel 2D array of Booleans to keep track of the visited cells.
+                </li>
+                <li>
+                    Use a class similar to Java API java.awt.Point to represent a point on the maze.
+                    Alternatively, write your own point (cell) class.
+                </li>
+                <li>
+                    As you are performing the breadth-first search via queue,
+                    keep track of the visitation distance of each cell that you visit in a parallel 2D array of integers.
+                    You can use this array to trace your path back to start from the finish point.
+                </li>
+                <li>
+                    Maze density is between 0 (no blocked cells at all) and 1 (complete blockage of all cells).
+                    Use a density that provides viable mazes.
+
+                </li>
+                <li>
+                    Optionally, place blocked cells on the exterior walls of your maze to help you stay
+                    inside the maze.
+                </li>
+                <li>
+                    For example:
+                </li>
+
+            <p>
+                <img src="images/rawArrayExample.png">
+            </p>
+            </ul>
+        </div>
+    </details>
+
+</header>
+
+<main>
+
+    <div class="code_control">
+
+        <input type="range" id="size" name="size"
+               min="2" max="100"
+               value="30"
+                onchange="showSliderValue(this)">
+        <label for="size">Maze Size</label>
+        <input type="number" class="slider_setting" id="sizeVal" disabled value="30">
+        <br>
+        <input type="range" id="density" name="density"
+               min="0" max="100" step="1"
+               value="20"
+               onchange="showSliderValue(this)">
+        <label for="density">Maze Wall Density</label>
+        <input type="number" class="slider_setting"  id="densityVal" disabled value="20">
+        <br>
+        <input type="range" id="speed" name="speed"
+               min="1" max="10" step="1"
+               value="1"
+               onchange="showSliderValue(this)">
+
+        <label for="speed">Solution Speed</label>
+        <input type="number" class="slider_setting"  id="speedVal" disabled value="1">
+        <br>
+        <section id="buttons">
+            <button onclick="generateMaze()">Generate Maze</button>
+            <button onclick="reset()">Reset Page</button>
+
+            <br>
+
+
+        </section>
+
+    </div>
+
+    <section class="code_ouput">
+    <h4>Maze:</h4>
+        <code><div class="content" id="rawMaze">
+
+   Click Generate Maze.
+    </div></code></section>
+
+
+    <section class="code_ouput">
+
+    <h4>Depth-First:</h4>
+        <p><button onclick="solveDFS()">Solve</button></p>
+
+
+    <div class="codeblock">
+
+        <code id="dfs">Click Solve Maze.</code>
+
+    </div></section>
+
+    <section class="code_ouput">
+
+        <h4>Breadth-First:</h4>
+        <p><button onclick="reset()">Solve</button></p>
+        <div class="codeblock">
+
+            <code id="bfs">Click Solve Maze.</code>
+        </div></section>
+
+</main>
+</body>
+</html>

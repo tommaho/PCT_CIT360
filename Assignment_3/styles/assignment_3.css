@@ -1,0 +1,74 @@
+/**
+* css for assignment_1
+*
+* Tom Mahoney
+* CIT360
+* Assignment 3 - css
+*
+* Page is hosted and for assignment instructions see:
+*
+* https://tommaho.github.io/PCT_CIT360/Assignment_3/
+*
+*/
+
+html {
+    font-family: sans-serif;
+    background-color: whitesmoke;
+}
+/*ul {
+    list-style: none;
+}*/
+
+details, div, summary {
+    padding: 10px 10px;
+    width: 800px;
+}
+.codeblock, .code_control, .assignment_detail, .content {
+    border: 1px solid darkgray;
+    word-wrap: break-word;
+}
+
+.codeblock, .code_control, table, .content {
+    width: 500px;
+}
+.codeblock, .content {
+    background-color: lightgrey;
+    padding-right: 30px;
+}
+
+
+.assignment_detail {
+    background-color: linen;
+}
+
+.test_header {
+    text-align: center;
+}
+table {
+    border-collapse:collapse;
+    /*width: 0!**!px;*/
+}
+
+.path, .wall, .start, .end {
+    padding: 0px;
+    border: 0px;
+    text-align: center;
+
+}
+.path {
+    background-color: white;
+    color: whitesmoke;
+}
+
+.wall {
+    background-color: black;
+}
+.start {
+    background-color: green;
+    color: white;
+}
+.end {
+    background-color: red;
+    color: white;
+}
+
