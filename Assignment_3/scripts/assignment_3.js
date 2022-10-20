@@ -116,77 +116,70 @@ function solveDFS() {
 
     let solved = false;
 
-    // function traverse(row, column) {
-    //     if (theMaze[row][column] == 'B') {
-    //
-    //         console.log('Solved, at: (' + row + ', ' + column + ')');
-    //         solved = true;
-    //         return true;
-    //
-    //     } else if (theMaze[row][column] == 0 && solved == false) {
-    //
-    //         //console.log("At valid position (" + column + ", " + row + ")");
-    //
-    //         theMaze[row][column] = 'V';
-    //
-    //         let idStr = 'dfs-' + column + '-' + row;
-    //         document.getElementById(idStr).style.backgroundColor = 'lightgreen';
-    //
-    //         if (row < theMaze.length - 1) { //right
-    //             traverse(row, column + 1,);
-    //         }
-    //         if (column < theMaze[column].length - 1) { //down
-    //             traverse(row + 1, column,);
-    //         }
-    //         if (row > 0) {
-    //             traverse(row, column - 1,); //left
-    //         }
-    //         if (column > 0) {
-    //             traverse(row - 1, column); //up
-    //         }
-    //     }
-    // }
+    /**
+     * I'm calling this recursively, using the call stack as the stack.
+     *
+     *
+     * @param row
+     * @param column
+     */
+    function search(row, column) {
 
-    function traverse(row, column) {
-        if(theMaze[column][row] == 'B') {
-            console.log("Solved at (" + column + ", " + row + ")");
+        let curVal = theMaze[column][row];
+
+        if(curVal == 'B') {
+            //console.log("Solved at (" + column + ", " + row + ")"); //debug
             solved = true;
+            return 0;
 
-        } else if((theMaze[column][row] == 0 || theMaze[column][row] == 'A') && solved == false) {
+        } else if((curVal == 0 || curVal == 'A') && solved == false) {
 
-            console.log("At position (" + column + ", " + row + ")");
+            //console.log("At position (" + column + ", " + row + ")");
 
             theMaze[column][row] = 'V';
 
             let idStr = 'dfs-' + column + '-' + row;
 
-            setInterval(() => {
-                document.getElementById(idStr).style.backgroundColor = 'lightgreen';
-            }, 1000);
-
+            //don't change the start point
+            if(curVal != 'A'){
+                setInterval(() => {
+                    document.getElementById(idStr).style.backgroundColor = 'lightgreen';
+                }, 1000);
+            }
 
             if(column < theMaze.length - 1) {
-                traverse( row, column + 1); //right
+                search( row, column + 1); //right
             }
             if(row < theMaze[column].length - 1) {
-                traverse(row + 1, column); //down
+                search(row + 1, column); //down
             }
             if(column > 0) {
-                traverse( row, column - 1); //left
+                search( row, column - 1); //left
             }
             if(row > 0) {
-                traverse(row - 1, column); //up
+                search(row - 1, column); //up
             }
         }
     };
 
-    console.log(startPoint);
+    //console.log(startPoint); //debug
 
-    traverse(startPoint[1], startPoint[0]);
+    search(startPoint[1], startPoint[0]);
 };
 
 
+function solveBFS() {
 
+    let theMaze = THE_MAZE;
+    let startPoint = START_POINT;
+    const docTarget = document.getElementById('dfs');
+    let solved = false;
+
+    console.log('solving BFS.');
+
+
+
+};
 
 
     //console.table(visited)
