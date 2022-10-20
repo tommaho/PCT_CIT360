@@ -108,34 +108,108 @@ function displayMaze(mazeArray, mazeId) {
     docTarget.innerHTML = mazeToTable(mazeArray, mazeId);
 };
 
-function solveDFS(){
+function solveDFS() {
 
     let theMaze = THE_MAZE;
     let startPoint = START_POINT;
     const docTarget = document.getElementById('dfs');
 
-    let path = [];
-    let visited = ;
+    let solved = false;
 
-    path.push(startPoint);
+    // function traverse(row, column) {
+    //     if (theMaze[row][column] == 'B') {
+    //
+    //         console.log('Solved, at: (' + row + ', ' + column + ')');
+    //         solved = true;
+    //         return true;
+    //
+    //     } else if (theMaze[row][column] == 0 && solved == false) {
+    //
+    //         //console.log("At valid position (" + column + ", " + row + ")");
+    //
+    //         theMaze[row][column] = 'V';
+    //
+    //         let idStr = 'dfs-' + column + '-' + row;
+    //         document.getElementById(idStr).style.backgroundColor = 'lightgreen';
+    //
+    //         if (row < theMaze.length - 1) { //right
+    //             traverse(row, column + 1,);
+    //         }
+    //         if (column < theMaze[column].length - 1) { //down
+    //             traverse(row + 1, column,);
+    //         }
+    //         if (row > 0) {
+    //             traverse(row, column - 1,); //left
+    //         }
+    //         if (column > 0) {
+    //             traverse(row - 1, column); //up
+    //         }
+    //     }
+    // }
 
-    while(path.length > 0){
+    function traverse(row, column) {
+        if(theMaze[column][row] == 'B') {
+            console.log("Solved at (" + column + ", " + row + ")");
+            solved = true;
 
-        let current = path.pop();
+        } else if((theMaze[column][row] == 0 || theMaze[column][row] == 'A') && solved == false) {
 
-        //console.log(theMaze[current[0]][current[1]]);
+            console.log("At position (" + column + ", " + row + ")");
 
-        if (theMaze[current[0]][current[1]] == 'B'){ //if current == the end, it's solved
-            console.log('Solved!');
-        } else {
+            theMaze[column][row] = 'V';
+
+            let idStr = 'dfs-' + column + '-' + row;
+
+            setInterval(() => {
+                document.getElementById(idStr).style.backgroundColor = 'lightgreen';
+            }, 1000);
 
 
+            if(column < theMaze.length - 1) {
+                traverse( row, column + 1); //right
+            }
+            if(row < theMaze[column].length - 1) {
+                traverse(row + 1, column); //down
+            }
+            if(column > 0) {
+                traverse( row, column - 1); //left
+            }
+            if(row > 0) {
+                traverse(row - 1, column); //up
+            }
         }
+    };
 
-    }
+    console.log(startPoint);
 
-
+    traverse(startPoint[1], startPoint[0]);
 };
+
+
+
+
+
+    //console.table(visited)
+    //
+    // path.push(startPoint);
+    //
+    // while(path.length > 0){
+    //
+    //     let current = path.pop();
+    //
+    //     //console.log(theMaze[current[0]][current[1]]);
+    //
+    //     if (theMaze[current[0]][current[1]] == 'B'){ //if current == the end, it's solved
+    //         console.log('Solved!');
+    //     } else {
+    //
+    //
+    //     }
+    //
+    // }
+
+
+
 
 
 function mazeToTable(mazeArray, whichMaze){
