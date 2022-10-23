@@ -84,8 +84,8 @@ function generateAndDisplayMaze() {
     };
 
     function randPoint(mazeSize) {
-        let x = Math.floor(Math.random() * mazeSize);
-        let y = Math.floor(Math.random() * mazeSize);
+        let x = Math.floor(Math.random() * (mazeSize));
+        let y = Math.floor(Math.random() * (mazeSize));
         return [x,y];
     }
 
@@ -95,9 +95,15 @@ function generateAndDisplayMaze() {
     let startPoint = randPoint(mazeSize);
     let endPoint = randPoint(mazeSize);
 
+    //prevent duplicate start and end points
+    // you have to compare the elements individually! Ugh! hours of debugging wasted.
+    while  (endPoint[0] == startPoint[0] && endPoint[1] == startPoint[1]){
+        endPoint = randPoint(mazeSize);
+    }
+
     rawMaze[startPoint[0]][startPoint[1]] = 'A';
     rawMaze[endPoint[0]][endPoint[1]] = 'B';
-    
+
     displayMaze(rawMaze, 'rawMaze');
     displayMaze(rawMaze, 'dfs');
     displayMaze(rawMaze, 'bfs');
