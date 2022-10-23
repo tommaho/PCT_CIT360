@@ -15,9 +15,9 @@ html {
     font-family: sans-serif;
     background-color: whitesmoke;
 }
-/*ul {
+.about {
     list-style: none;
-}*/
+}
 
 details, div, summary {
     padding: 10px 10px;
