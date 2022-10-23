@@ -14,8 +14,6 @@
  * retains the styling of the previous solution despite being explicitly reset
  * in code. I have some solutions in mind but no the time to implement.
  *
- * TODO:
- * Proper response when no solution is found
  *
  *
  */
@@ -91,7 +89,6 @@ function generateAndDisplayMaze() {
         return [x,y];
     }
 
-    //reset();
     let mazeSize = document.getElementById('size').value;
     let mazeDensity = document.getElementById('density').value;
     let rawMaze = Array.from(getGrid(mazeSize, mazeDensity));
@@ -100,7 +97,7 @@ function generateAndDisplayMaze() {
 
     rawMaze[startPoint[0]][startPoint[1]] = 'A';
     rawMaze[endPoint[0]][endPoint[1]] = 'B';
-
+    
     displayMaze(rawMaze, 'rawMaze');
     displayMaze(rawMaze, 'dfs');
     displayMaze(rawMaze, 'bfs');
@@ -120,7 +117,6 @@ function generateAndDisplayMaze() {
  */
 function displayMaze(mazeArray, mazeId) {
     const docTarget = document.getElementById(mazeId);
-    docTarget.removeChild(docTarget.firstChild);        //this is never applied to the DOM and I dont know why.
     docTarget.innerHTML = mazeToTable(mazeArray, mazeId);
 };
 
@@ -162,9 +158,7 @@ function solveDFS() {
 
             //don't change the start point
             if(curVal != 'A'){
-                setInterval(() => {
                     document.getElementById(idStr).style.backgroundColor = 'lightgreen';
-                }, 1000);
             }
 
             if(column < theMaze.length - 1) {
@@ -272,8 +266,7 @@ function solveBFSHelper() {
     }
 
     let path = solveBFS();
-    //console.log(path);
-   // console.log('path length: ' + path.length);
+
     if(path){
         for (let i = 1; i < path.length; i++) {
 
