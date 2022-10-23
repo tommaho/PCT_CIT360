@@ -7,13 +7,6 @@
  *
  * https://tommaho.github.io/PCT_CIT360/Assignment_3/
  *
- * Known Bugs:
- *
- * When you generate a maze without resetting the page, it seems like
- * there's something like a CSS cache that needs to be reset. You'll notice it
- * retains the styling of the previous solution despite being explicitly reset
- * in code. I have some solutions in mind but no the time to implement.
- *
  *
  *
  */
@@ -116,7 +109,6 @@ function generateAndDisplayMaze() {
 
 /**
  * Displays raw results
- * There's a bug in this I still need to work out.
  *
  * @param mazeArray the maze to display
  * @param mazeId the element id to update the correct page block
