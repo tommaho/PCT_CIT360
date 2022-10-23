@@ -115,16 +115,10 @@
         <label for="density">Maze Wall Density</label>
         <input type="number" class="slider_setting"  id="densityVal" disabled value="20">
         <br>
-        <input type="range" id="speed" name="speed"
-               min="1" max="10" step="1"
-               value="1"
-               onchange="showSliderValue(this)">
 
-        <label for="speed">Solution Speed</label>
-        <input type="number" class="slider_setting"  id="speedVal" disabled value="1">
         <br>
         <section id="buttons">
-            <button onclick="generateMaze()">Generate Maze</button>
+            <button onclick="generateAndDisplayMaze()">Generate Maze</button>
             <button onclick="reset()">Reset Page</button>
 
             <br>
@@ -157,7 +151,7 @@
     <section class="code_ouput">
 
         <h4>Breadth-First:</h4>
-        <p><button onclick="solveBFS()">Solve</button></p>
+        <p><button onclick="solveBFSHelper()">Solve</button></p>
         <div class="codeblock">
 
             <code id="bfs">Click Solve Maze.</code>

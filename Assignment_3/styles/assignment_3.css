@@ -1,5 +1,5 @@
 /**
-* css for assignment_1
+* css for assignment_3
 *
 * Tom Mahoney
 * CIT360
@@ -21,7 +21,7 @@ html {
 
 details, div, summary {
     padding: 10px 10px;
-    width: 800px;
+    width: 850px;
 }
 .codeblock, .code_control, .assignment_detail, .content {
     border: 1px solid darkgray;
@@ -29,7 +29,7 @@ details, div, summary {
 }
 
 .codeblock, .code_control, table, .content {
-    width: 500px;
+    width: 800px;
 }
 .codeblock, .content {
     background-color: lightgrey;

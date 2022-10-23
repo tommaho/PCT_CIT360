@@ -7,13 +7,22 @@
  *
  * https://tommaho.github.io/PCT_CIT360/Assignment_3/
  *
+ * Known Bugs:
+ *
+ * When you generate a maze without resetting the page, it seems like
+ * there's something like a CSS cache that needs to be reset. You'll notice it
+ * retains the styling of the previous solution despite being explicitly reset
+ * in code. I have some solutions in mind but no the time to implement.
+ *
+ * TODO:
+ * Proper response when no solution is found
+ *
+ *
  */
 
 /*
 Instead of clever passing mechanisms I'm using simple page-scoped globals to
 store the generated maze, start, and end points.
-
-
  */
 
 let THE_MAZE = [];
@@ -58,26 +67,31 @@ function* getCell(n, density) {
 };
 
 /**
- * Generator function, see:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
- *
- * @param n grid size n x n
- * @param density the odds any cell is a wall, in 10% increments
- * @returns {Generator<number[], void, *>}
+ * Does initial maze generation and displays on page
  */
-function* getGrid(n, density) {
-    for (let i = 0; i < n; i++) {
-        yield Array.from(getCell(n, density));
+function generateAndDisplayMaze() {
+
+    /**
+     * Generator function, see:
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
+     *
+     * @param n grid size n x n
+     * @param density the odds any cell is a wall, in 10% increments
+     * @returns {Generator<number[], void, *>}
+     */
+    function* getGrid(n, density) {
+        for (let i = 0; i < n; i++) {
+            yield Array.from(getCell(n, density));
+        }
+    };
+
+    function randPoint(mazeSize) {
+        let x = Math.floor(Math.random() * mazeSize);
+        let y = Math.floor(Math.random() * mazeSize);
+        return [x,y];
     }
-};
 
-function randPoint(mazeSize) {
-    let x = Math.floor(Math.random() * mazeSize);
-    let y = Math.floor(Math.random() * mazeSize);
-    return [x,y];
-}
-
-function generateMaze() {
+    //reset();
     let mazeSize = document.getElementById('size').value;
     let mazeDensity = document.getElementById('density').value;
     let rawMaze = Array.from(getGrid(mazeSize, mazeDensity));
@@ -95,20 +109,30 @@ function generateMaze() {
     THE_MAZE = rawMaze;
     START_POINT = startPoint;
     END_POINT = endPoint;
-    //console.table(rawMaze);
 };
 
 /**
  * Displays raw results
+ * There's a bug in this I still need to work out.
+ *
  * @param mazeArray the maze to display
  * @param mazeId the element id to update the correct page block
  */
 function displayMaze(mazeArray, mazeId) {
     const docTarget = document.getElementById(mazeId);
+    docTarget.removeChild(docTarget.firstChild);        //this is never applied to the DOM and I dont know why.
     docTarget.innerHTML = mazeToTable(mazeArray, mazeId);
 };
 
+/**
+ * solve the depth-first-search maze
+ */
 function solveDFS() {
+
+    if (THE_MAZE.length == 0){
+        alert("You must first generate a maze!");
+        return;
+    }
 
     let theMaze = THE_MAZE;
     let startPoint = START_POINT;
@@ -117,8 +141,7 @@ function solveDFS() {
     let solved = false;
 
     /**
-     * I'm calling this recursively, using the call stack as the stack.
-     *
+     * I'm calling this recursively, using the call stack as 'the stack'.
      *
      * @param row
      * @param column
@@ -128,13 +151,10 @@ function solveDFS() {
         let curVal = theMaze[column][row];
 
         if(curVal == 'B') {
-            //console.log("Solved at (" + column + ", " + row + ")"); //debug
             solved = true;
             return 0;
 
         } else if((curVal == 0 || curVal == 'A') && solved == false) {
-
-            //console.log("At position (" + column + ", " + row + ")");
 
             theMaze[column][row] = 'V';
 
@@ -161,50 +181,116 @@ function solveDFS() {
             }
         }
     };
-
-    //console.log(startPoint); //debug
-
     search(startPoint[1], startPoint[0]);
+    if(solved == false){
+        alert("This maze doesn't appear to have a solution!");
+    }
 };
 
+/**
+ * return a blank array that mirrors the maze size
+ * @returns {any[][]}
+ */
+function newReferenceArray() {
+    return Array.from(Array(THE_MAZE.length), () =>  new Array(THE_MAZE.length).fill(0));
+}
 
-function solveBFS() {
+/**
+ * The consensus for javascript seems to be that a queue is an 'unnecessary abstraction'
+ * for most use cases, and instead an array can be used for all but very large arrays.
+ *
+ * The JS array has .push() to enqueue, and .shift() to pop-left or dequeue.
+ *
+ * For one such discussion, see:
+ *
+ * https://stackoverflow.com/questions/1590247/how-do-you-implement-a-stack-and-a-queue-in-javascript
+ *
+ *
+ */
+function solveBFS(){
+
 
     let theMaze = THE_MAZE;
     let startPoint = START_POINT;
-    const docTarget = document.getElementById('dfs');
+    let visited = newReferenceArray();
+    let queue = [];
     let solved = false;
 
-    console.log('solving BFS.');
+    visited[[startPoint[0]][startPoint[1]]] = 1;
+    queue.push([START_POINT]);
 
+
+    while (queue.length > 0) {
+
+        let path = queue.shift();
+        let cell = path[path.length-1]; //get the last cell from the queue
+
+        //places to check
+        let check = [
+            [cell[0] + 1, cell[1]], //down
+            [cell[0], cell[1] + 1], //right
+            [cell[0] - 1, cell[1]], //up
+            [cell[0], cell[1] - 1] //left
+        ];
+
+        for (let i = 0; i < check.length; i++) {
+            //check for valid points
+                let r = check[i][0];
+                let c = check[i][1];
+
+            if (r < 0 || r >= theMaze.length
+                || c < 0 || c >= theMaze.length
+                || visited[r][c] != 0
+                || theMaze[r][c] == 1) {
+                continue;
+            } else if ( //check the base case, solved, after points are determined valid
+                theMaze[r][c] == 'B'
+            ) {
+                path.concat([r, c]);
+                solved = true;
+                return path;
+
+            }
+            visited[r][c] = 1;
+            queue.push(path.concat([check[i]]));
+        }
+    }
+    if(solved == false){
+        alert("This maze doesn't appear to have a solution!");
+    }
+};
+
+
+/**
+ *  Solve via BFS and format the corresponding table
+ */
+function solveBFSHelper() {
+
+    if (THE_MAZE.length == 0){
+        alert("You must first generate a maze!");
+        return;
+    }
+
+    let path = solveBFS();
+    //console.log(path);
+   // console.log('path length: ' + path.length);
+    if(path){
+        for (let i = 1; i < path.length; i++) {
+
+            let idStr = 'bfs-' + path[i][0] + '-' + path[i][1];
+            document.getElementById(idStr).style.backgroundColor = 'lightgreen';
+        }
+    }
 
 
 };
 
-
-    //console.table(visited)
-    //
-    // path.push(startPoint);
-    //
-    // while(path.length > 0){
-    //
-    //     let current = path.pop();
-    //
-    //     //console.log(theMaze[current[0]][current[1]]);
-    //
-    //     if (theMaze[current[0]][current[1]] == 'B'){ //if current == the end, it's solved
-    //         console.log('Solved!');
-    //     } else {
-    //
-    //
-    //     }
-    //
-    // }
-
-
-
-
-
+/**
+ * create an html formatted table from the maze array.
+ * @param mazeArray
+ * @param whichMaze
+ * @returns {string}
+ */
 function mazeToTable(mazeArray, whichMaze){
     let tableHTML = "<table class='maze'>";
 
@@ -214,16 +300,16 @@ function mazeToTable(mazeArray, whichMaze){
 
             switch (mazeArray[i][j]) {
                 case 0:
-                    classStr = " class='path' ";
+                    classStr = " class='path'";
                     break;
                 case 1:
-                    classStr = " class='wall' ";
+                    classStr = " class='wall'";
                     break;
                 case 'A':
-                    classStr = " class='start' ";
+                    classStr = " class='start'";
                     break;
                 case 'B':
-                    classStr = " class='end' ";
+                    classStr = " class='end'";
                     break;
             }
 
@@ -234,8 +320,7 @@ function mazeToTable(mazeArray, whichMaze){
         }
         tableHTML += '</tr>';
     }
-
     tableHTML += '</table>';
-
   return tableHTML;
 };
+
