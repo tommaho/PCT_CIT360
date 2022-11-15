@@ -1,0 +1,51 @@
+/**
+* css for final assignment
+*
+* Tom Mahoney
+* CIT360
+* Final Assignment - css
+*
+* Page is hosted and for assignment instructions see:
+*
+* https://tommaho.github.io/PCT_CIT360/Final_Assignment/
+*
+*/
+
+html {
+    font-family: sans-serif;
+    background-color: whitesmoke;
+}
+.about {
+    list-style: none;
+}
+
+details, div, summary {
+    padding: 10px 10px;
+    width: 850px;
+}
+.codeblock, .code_control, .assignment_detail, .content {
+    border: 1px solid darkgray;
+    word-wrap: break-word;
+}
+
+.codeblock, .code_control, table, .content {
+    width: 800px;
+}
+.codeblock, .content {
+    background-color: lightgrey;
+    padding-right: 30px;
+}
+
+
+.assignment_detail {
+    background-color: linen;
+}
+
+.test_header {
+    text-align: center;
+}
+
+/**              Format Assignment Detail            **/
+
+
+
