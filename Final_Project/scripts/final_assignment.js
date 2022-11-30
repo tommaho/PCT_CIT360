@@ -9,6 +9,9 @@
  *
  */
 
+//import the Graph class from graph.js
+import {Graph} from "./graph.js";
+
 /**
  * called by the page reset button
  */
@@ -16,65 +19,6 @@ function reset() {
     window.location.reload();
     window.fileInputForm.reset;
 }
-
-
-/**
- * Looked for an n-gram generation algo for continuous text and found inspiration from:
- * https://stackoverflow.com/questions/40763960/data-structure-for-ngrams#40765350
- *
- * @param str the string to look in
- * @param n the width, in characters, of the entries
- */
-// function getNGrams(str, n){
-//
-//     let gram = '';
-//     let ngrams = new Map();
-//     let mostDiverse = 0;
-//
-//     /*
-//         I allow this loop below to go 'past' the end of the string, to account for
-//         any edge cases where the incomplete tail is the most diverse. I think this would throw
-//         array out of bounds exceptions in most non-dynamic languages.
-//      */
-//     for (let i = 0; i < (str.length); i++) {
-//         gram = str.substring(i, i+n);
-//
-//         /*
-//          Notes on what I'm doing below:
-//
-//                 I don't like calling New in a loop of indeterminate length, but
-//                 [new Set(gram).size] *should* be immediately discarded and garbage-collected.
-//                 I think I would have to figure out memory profiling and run a bunch of tests
-//                 to determine if this were true in practice
-//                 see: https://stackoverflow.com/questions/30318936/call-new-on-a-constructor-without-assigning-it-to-a-variable
-//
-//                 the conditional skips BOTH subsequent instances of a given gram, AND grams that are not more diverse than
-//                 the most diverse yet found
-//
-//                 Don't have to worry about a tie-breaker for repeat same-diversity n-grams, when only the first-found is
-//                 stored
-//          */
-//
-//         let gramDiversity = new Set(gram).size; //Set operation will yield only unique values
-//
-//         if (!ngrams.get(gram) && gramDiversity > mostDiverse){ //not yet stored AND more diverse, skip the rest
-//
-//             ngrams.set(gram, gramDiversity);
-//             mostDiverse = gramDiversity;
-//         }
-//     }
-//
-//     return ngrams;
-// };
-
-/**
- * Sort provided map object by value, descending.
- * @param map
- * @returns {Map<unknown, unknown>} sorted map
- */
-// function sortNGrams(map){
-//     return new Map([...map.entries()].sort((a,b) => b[1] - a[1]));
-// };
 
 
 /**
@@ -91,20 +35,16 @@ function loadMapAndRun() {
 
         let parsedText = parse(reader.result)
         let controlFieldCount = 0;
+
         let vertices = [];
         let edges = [];
         let cases = [];
 
-        // let resultHTML = '';
-        // let fileHTML = ''
-        // let j = 1; //log counter
+        let resultHTML = '';
+        let case_count = 0; //count of cases to process
 
         for (let i = 0; i < parsedText.length; i++) {
             let line = parsedText[i];
-
-            //console.log(line);
-
-            //console.log(parseInt( line, 10));
 
             if(isControlField(line)) {
                 //console.log('This looks like a control field.');
@@ -121,39 +61,62 @@ function loadMapAndRun() {
                         cases.push(splitCases(line));
                         break;
                     default:
-                        alert('you dun fucked up');
+                        alert('Something is wrong!');
                         //something's wrong
                 }
             }
-
-            // let n =  parseInt( parsedText[i], 10);
-            // let textStr = parsedText[i + 1];
-            //
-            // if (n && textStr) {//only proceed if these values both exist
-            //
-            //
-            // let result = getNGrams(textStr, n);
-            // let sortedResults = sortNGrams(result);
-            //
-            // let winner = [...sortedResults][0][0];
-            // let distinctN = [...sortedResults][0][1]
-            //
-            // fileHTML += j  + ". <p class='fileContent'>" + n + "<br>" + highlightWinner(textStr, winner) + "</p>";
-            //
-            // resultHTML += j  + ". The first most diverse entry is <span class='entry'>" + winner +
-            //     "</span> with " + distinctN + " distinct values.<br>"
-            //
-            // j++;
-            // i += 1;
-            // }
          }
 
-        //console.log("Vertices: ", vertices);
-        //console.log("Edges: ",edges);
-        //console.log("Cases: ",cases);
+        let theGraph = new Graph();
 
-        // displayFile(fileHTML);
-        // displayResult(resultHTML);
+        //load the vertices
+        for (const loc in vertices) {
+            theGraph.add_vertex(loc);
+        }
+
+        //load the edges
+        for (const edge in edges) {
+            let node_a = edges[edge][0];
+            let node_b = edges[edge][1];
+
+            let a_lat =  vertices[node_a][1];
+            let a_lon =  vertices[node_a][2];
+            let b_lat =  vertices[node_b][1];
+            let b_lon =  vertices[node_b][2];
+
+            let distance = distanceInKmBetweenEarthCoordinates(a_lat, a_lon, b_lat, b_lon); //calculate distance here
+
+            //debug: console.log("Adding edge ", node_a, " to ", node_b, "dist: ", distance);
+            theGraph.add_edge(node_a, node_b, distance);
+        }
+
+        for (const c in cases) {
+            let source = cases[c][0];
+            let dest = cases[c][1];
+            let path = theGraph.shortest_path(source, dest);
+
+            let source_name = vertices[source][4];
+            let dest_name = vertices[dest][4];
+
+            case_count += 1;
+
+            resultHTML += `<p><strong>Case ${case_count}</strong>: ${source_name} to ${dest_name}:\n</p>`;
+
+            let step_count = 0;
+            for (const step in path) {
+                step_count += 1;
+                let step_name = vertices[path[step]][4];
+
+                resultHTML += `<p>${step_count}. ${step_name} <!--(${path[step]}) --> </p>`
+
+            }
+
+            resultHTML +=`<br>This route will result in about x total kilometers traveled.<br><br><br>`
+
+
+        }
+
+        displayResult(resultHTML);
 
     }, false);
 
@@ -173,8 +136,10 @@ function parse(text){
 };
 
 /**
- * if the line has only one entry and it's a number. Data lines could be comma or space
- * delimeted.
+ * if the line has only one entry and it's a number. Note I don't explicity 'trust'
+ * the control field, but loop until I hit another one. In practice I would verify
+ * that the number of data records does match the control field.
+ *
  * @param line
  */
 function isControlField(line){
@@ -195,9 +160,6 @@ function splitVertices(vLine){
     let raw = vLine.split(',');
 
 
-    //console.log(raw);
-    //console.log(raw.length);
-
     entries.push( parseInt(raw[0])); //id
     entries.push( parseFloat(raw[1])); //lat
     entries.push( parseFloat(raw[2])); //lon
@@ -217,7 +179,7 @@ function splitVertices(vLine){
  */
 function splitEdges(eLine){
     let entries = [];
-    let raw = eLine;
+    let raw = eLine.split(',');
     entries.push( parseInt(raw[0]));
     entries.push( parseInt(raw[1]));
 
@@ -234,40 +196,59 @@ function splitCases(cLine){
 }
 
 /**
- * Format text in a way that will use css to highlight the winning entry
- * @param text
- * @param winner
- * @returns {*}
+ * Copied from StackOverflow:
+ * https://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates
+ *
+ * @param degrees
+ * @returns {number}
  */
-// function highlightWinner (text, winner ){
-//     let winnerPos = text.indexOf(winner)
-//
-//     let highlighted = text.substring(0, winnerPos) + "<span class='entry'>" +
-//         winner + "</span>" + text.substring(winnerPos + winner.length)
-//
-//     return highlighted;
-// };
+function degreesToRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
 
 /**
- * Displays file content.
- * @param fileText
+ *Copied from StackOverflow with a couple tweaks:
+ * https://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates
+ *
+ * @param lat1
+ * @param lon1
+ * @param lat2
+ * @param lon2
+ * @returns {number}
  */
-// function displayFile(fileText) {
-//    const content = document.querySelector('.content');
-//
-//    let fileHTML = '';
-//    content.innerHTML = fileText;
-//
-// };
+function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
+    let earthRadiusKm = 6371;
+    let dLat = degreesToRadians(lat2-lat1);
+    let dLon = degreesToRadians(lon2-lon1);
+
+    lat1 = degreesToRadians(lat1);
+    lat2 = degreesToRadians(lat2);
+
+    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return earthRadiusKm * c;
+}
+
 
 /**
  * Displays results
  * @param resultHTML
  */
-// function displayResult(resultHTML) {
+function displayResult(resultHTML) {
+
+    const logTarget = document.getElementById("output");
+    logTarget.innerHTML = resultHTML;
+
+
+};
+
+
+
+//turning these into modules apparently closes scope around the js file, and functions
+//must be exposed to the window object to work, see:
+//https://stackoverflow.com/questions/44590393/es6-modules-undefined-onclick-function-after-import
 //
-//     const logTarget = document.getElementById("output");
-//     logTarget.innerHTML = resultHTML;
+//In practice it's probably not the best way to do this.
 //
-//
-// };
+window.loadMapAndRun = loadMapAndRun;

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Maze - Shortest Path</title>
     <link rel="stylesheet" href="styles/final_assignment.css">
-    <script type="text/javascript" src="scripts/final_assignment.js">
+    <script type="module" src="scripts/graph.js"></script>
+    <script type="module" src="scripts/final_assignment.js"></script>
 
-</script>
 
 </head>
 <body>
@@ -17,12 +17,91 @@
     <li>Fall 2022</li>
     <li>&nbsp;</li>
     <li>Final Assignment</li>
-    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Final_Project/scripts/final_assignment.js" target="_blank">js source code</a></li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Final_Project/scripts/final_assignment.js" target="_blank">Main js source code</a></li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Final_Project/scripts/graph.js" target="_blank">Graph js source code</a></li>
+    <li><a href="https://github.com/tommaho/PCT_CIT360/blob/main/Final_Project/data/map.csv" target="_blank">Map file</a></li>
 
 </ul>
     <details>
         <summary>Assignment Description - Final Assignment (click to expand)</summary>
         <div class="assignment_detail">
+
+            <h3>CIT360 Graph Assignment</h3>
+
+            <strong>Step 1</strong>
+            <p>Study and complete the WDGraph class (a version is available on OneDrive).
+                Understand how the Dijkstra’s single-source shortest path algorithm works.
+            </p>
+
+            <strong>Step 2</strong>
+           <p> Use a Graph implementation to find the shortest path between two given locations.
+               Locations are given via their geo coordinates.  The information about the graph and
+               the input points are given a file called “map.csv”
+           </p>
+            <hr>
+            <p>
+                The format of the “map.csv” file is as follows (read carefully!):
+            </p>
+
+            <code>
+                <p>V - An integer representing the total number of vertices
+                    <br>0, longitude, Latitude, height, location name
+                <br>1, longitude, Latitude, height, location name
+                <br>2, longitude, Latitude, height, location name
+                    <br>
+                .
+                .</p>
+
+                <p>E - An integer representing the number of edges
+
+                <br>Vertex 1, Vertex 2, type (1 = one directional, 2 - bi-directional)
+                <br>Vertex 1, Vertex 2, type
+                    <br>
+                .
+                .
+                </p>
+                <p>N - an integer N representing number of cases that follows
+
+                <br>origin vertex, destination vertex</br></p>
+            </code>
+            <p>Output</p>
+
+            <p>For each case in the input file, output the shortest path and total distance travelled. For each case:
+                <ol>
+            <li>a) print the shortest path</li>
+            <li>b) print the complete set of directions.</li>
+            <li>c) print the total distance travelled</li></ol></p>
+
+            <p>The formulas to calculate the distance between two GPS coordinate systems are
+                readily available on the web. For instance you may use the ones sited in
+            <a href="http://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates">
+                http://stackoverflow.com/questions/365826/calculate-distance-between-2-gps-coordinates</a>
+            or
+            <a href="http://www.movable-type.co.uk/scripts/latlong.html">
+                http://www.movable-type.co.uk/scripts/latlong.html</a></p>
+
+
+            <p>Upon completion, ZIP all your files (project) and submit. I should be able to run
+                your programs from the folder that you submit. Remove any local packages and use local
+                file references. Pay attention to the units of measurements do not mix up latitude with
+                longitude. Verify your answers independently with the map.</p>
+
+
+            <strong>Some technical requirements:</strong>
+            <p>Name the input file “map.csv”
+                Do not use any absolute file location for your input and output.
+                Project must be self-contained and run as given without having to import any other source and support
+                files.
+                Write output to both standard output and file “directions.dat”
+                Your code must be written by you and be documented well.</p>
+
+
+            <strong>Extra credits available</strong>
+            <p>The following features can earn you extra credits:
+                Giving detailed directions such as “Walk North- North East for 200 feet”
+                Giving more detailed directions such as “Turn Left, Walk North- North East for 200 feet”
+                Creating 2D images and line connecting the way points</p>
+
         </div>
 
     </details>
@@ -33,7 +112,7 @@
 
     <div class="code_control">
         <section id="buttons">
-            <form id="fileInput"><input type="file" accept=".dat" onchange="loadMapAndRun()" />
+            <form id="fileInput"><input type="file" accept=".csv" onchange="loadMapAndRun()" />
 
                 <button onclick="reset()">Reset Page</button></form>
         </section>
@@ -43,7 +122,7 @@
 
     <section class="code_ouput">
     <h4>Map Contents:</h4>
-        <code><div class="content" id="rawData">
+        <code><div class="content" id="output">
 
    Load a map file!
     </div></code></section>
