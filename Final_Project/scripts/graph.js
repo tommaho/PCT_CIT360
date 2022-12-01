@@ -41,6 +41,7 @@ class Graph{
         this.adjacency_list = {};
         this.num_vertices = 0;
         this.num_edges = 0;
+        this.path_distance = 0;
     }
 
     add_vertex(v){
@@ -93,12 +94,15 @@ class Graph{
         while(nodes.values.length){
             shortest = nodes.dequeue().val;
             if (shortest == end){
-
+                this.path_distance += dist[shortest]; //distance to final hop
+                //debug: console.log(`shortest: ${shortest}, dist: ${dist[shortest]}`);
                 //at destination
 
                 while(prev[shortest]){
                     path.push(shortest);
                     shortest = prev[shortest];
+                    this.path_distance += dist[shortest]; //distance to intermediate shortest hops
+                    //debug console.log(`shortest: ${shortest}, dist: ${dist[shortest]}`);
                 }
                 //debug: console.log("p: ", path);
                 break;
@@ -124,6 +128,8 @@ class Graph{
                         prev[next_neighbor] = shortest;
                         // enqueue in priority queue with new priority
                         nodes.enqueue(next_neighbor, candidate);
+
+
                     }
                 }
             }
@@ -162,7 +168,7 @@ function test() {
 
 }
 
-
+//test();
 //make the Graph class available to other files
 export { Graph };
 

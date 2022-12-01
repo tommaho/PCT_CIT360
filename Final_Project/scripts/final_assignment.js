@@ -111,7 +111,7 @@ function loadMapAndRun() {
 
             }
 
-            resultHTML +=`<br>This route will result in about x total kilometers traveled.<br><br><br>`
+            resultHTML +=`<br>This route will result in about ${theGraph.path_distance.toFixed(1)} total kilometers traveled.<br><br><br>`
 
 
         }
